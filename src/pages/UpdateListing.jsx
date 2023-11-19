@@ -8,7 +8,7 @@ export default function CreateListing() {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const params = useParams();
-  const [files, setFiles] = useState({});
+  const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
     imageUrls: [],
     name: '',
@@ -17,7 +17,7 @@ export default function CreateListing() {
     type: 'rent',
     bedrooms: 1,
     bathrooms: 1,
-    regularPrice: 0,
+    regularPrice: 50,
     discountPrice: 0,
     offer: false,
     parking: false,
@@ -66,7 +66,7 @@ export default function CreateListing() {
           setUploading(false);
         });
     } else {
-      setImageUploadError('You can only upload 6 image per listing');
+      setImageUploadError('You can only upload 6 images per listing');
       setUploading(false);
     }
   };
@@ -153,7 +153,6 @@ export default function CreateListing() {
       setLoading(false);
     }
   };
-
   return (
     <main className="p-3 max-w-4xl mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Update a Listing</h1>
@@ -194,24 +193,24 @@ export default function CreateListing() {
               <p>Baths</p>
             </div>
             <div className="flex items-center gap-2">
-              <input type="number" id="regularPrice" min="0" max="100000000" required className="p-3 border border-gray-300 rounded-lg" onChange={handleChange} value={formData.regularPrice} />
+              <input type="number" id="regularPrice" min="0" max="10000000" required className="p-3 border border-gray-300 rounded-lg" onChange={handleChange} value={formData.regularPrice} />
               <div className="flex flex-col items-center">
                 <p>Regular price</p>
-                <span className="text-xs">($ / month)</span>
+                {formData.type === 'rent' && <span className="text-xs">($ / month)</span>}
               </div>
             </div>
             {formData.offer && (
               <div className="flex items-center gap-2">
-                <input type="number" id="discountPrice" min="0" max="100000000" required className="p-3 border border-gray-300 rounded-lg" onChange={handleChange} value={formData.discountPrice} />
+                <input type="number" id="discountPrice" min="0" max="10000000" required className="p-3 border border-gray-300 rounded-lg" onChange={handleChange} value={formData.discountPrice} />
                 <div className="flex flex-col items-center">
-                  <p>Discount price</p>
-                  <span className="text-xs">($ / month)</span>
+                  <p>Discounted price</p>
+                  {formData.type === 'rent' && <span className="text-xs">($ / month)</span>}
                 </div>
               </div>
             )}
           </div>
         </div>
-        <div className="flex flex-col gap-4 flex-1">
+        <div className="flex flex-col flex-1 gap-4">
           <p className="font-semibold">
             Images:
             <span className="font-normal text-gray-600 ml-2">The first image will be the cover (max 6)</span>
@@ -219,7 +218,7 @@ export default function CreateListing() {
           <div className="flex gap-4">
             <input onChange={(e) => setFiles(e.target.files)} className="p-3 border border-gray-300 rounded w-full" type="file" id="images" accept="image/*" multiple />
             <button type="button" disabled={uploading} onClick={handleImageSubmit} className="p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80">
-              {uploading ? 'uploading...' : 'Upload'}
+              {uploading ? 'Uploading...' : 'Upload'}
             </button>
           </div>
           <p className="text-red-700 text-sm">{imageUploadError && imageUploadError}</p>
@@ -233,7 +232,7 @@ export default function CreateListing() {
               </div>
             ))}
           <button disabled={loading || uploading} className="p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
-            {loading ? 'Creating...' : 'Update listing'}
+            {loading ? 'Updating...' : 'Update listing'}
           </button>
           {error && <p className="text-red-700 text-sm">{error}</p>}
         </div>
