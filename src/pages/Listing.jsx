@@ -8,6 +8,8 @@ import 'swiper/css/bundle';
 import { FaBath, FaBed, FaChair, FaMapMarkedAlt, FaMapMarkerAlt, FaParking, FaShare } from 'react-icons/fa';
 import Contact from '../components/Contact';
 
+// https://sabe.io/blog/javascript-format-numbers-commas#:~:text=The%20best%20way%20to%20format,format%20the%20number%20with%20commas.
+
 export default function Listing() {
   SwiperCore.use([Navigation]);
   const [listing, setListing] = useState(null);
@@ -19,7 +21,7 @@ export default function Listing() {
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
-    const fecthListing = async () => {
+    const fetchListing = async () => {
       try {
         setLoading(true);
         const res = await fetch(`/api/listing/get/${params.listingId}`);
@@ -37,14 +39,13 @@ export default function Listing() {
         setLoading(false);
       }
     };
-    fecthListing();
+    fetchListing();
   }, [params.listingId]);
 
   return (
     <main>
       {loading && <p className="text-center my-7 text-2xl">Loading...</p>}
       {error && <p className="text-center my-7 text-2xl">Something went wrong!</p>}
-
       {listing && !loading && !error && (
         <div>
           <Swiper navigation>
@@ -75,7 +76,7 @@ export default function Listing() {
           {copied && <p className="fixed top-[23%] right-[5%] z-10 rounded-md bg-slate-100 p-2">Link copied!</p>}
           <div className="flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4">
             <p className="text-2xl font-semibold">
-              {listing.name} - $ {listing.offer ? listing.discountPrice.toLocaleString('en-US') : listing.regularPrice.toLocaleString('en-US')}
+              {listing.name} - $ {listing.offer ? listing.regularPrice.toLocaleString('en-US') : listing.discountPrice.toLocaleString('en-US')}
               {listing.type === 'rent' && ' / month'}
             </p>
             <p className="flex items-center mt-6 gap-2 text-slate-600  text-sm">
@@ -108,11 +109,11 @@ export default function Listing() {
                 {listing.furnished ? 'Furnished' : 'Unfurnished'}
               </li>
             </ul>
-            {/* {currentUser && listing.userRef !== currentUser._id && !contact && (
-            )} */}
-            <button onClick={() => setContact(true)} className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3">
-              Contact admin
-            </button>
+            {currentUser && listing.userRef !== currentUser._id && !contact && (
+              <button onClick={() => setContact(true)} className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3">
+                Contact admin
+              </button>
+            )}
             {contact && <Contact listing={listing} />}
           </div>
         </div>
