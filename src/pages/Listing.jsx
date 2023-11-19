@@ -85,7 +85,7 @@ export default function Listing() {
             </p>
             <div className="flex gap-4">
               <p className="bg-red-900 w-full max-w-[200px] text-white text-center p-1 rounded-md">{listing.type === 'rent' ? 'For Rent' : 'For Sale'}</p>
-              {listing.offer && <p className="bg-green-900 w-full max-w-[200px] text-white text-center p-1 rounded-md">${+listing.regularPrice - +listing.discountPrice} discount</p>}
+              {listing.offer && <p className="bg-green-900 w-full max-w-[200px] text-white text-center p-1 rounded-md">${+listing.regularPrice - +listing.discountPrice}</p>}
             </div>
             <p className="text-slate-800">
               <span className="font-semibold text-black">Description - </span>
@@ -109,11 +109,11 @@ export default function Listing() {
                 {listing.furnished ? 'Furnished' : 'Unfurnished'}
               </li>
             </ul>
-            {currentUser && listing.userRef !== currentUser._id && !contact && (
-              <button onClick={() => setContact(true)} className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3">
-                Contact admin
-              </button>
-            )}
+            {/* {currentUser && listing.userRef !== currentUser._id && !contact && (
+            )} */}
+            <button onClick={() => setContact(true)} className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3">
+              Contact admin
+            </button>
             {contact && <Contact listing={listing} />}
           </div>
         </div>
